@@ -4,10 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +24,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.TreeSet;
 
 
 public class MainPageActivity extends AppCompatActivity {
@@ -25,15 +35,43 @@ public class MainPageActivity extends AppCompatActivity {
     AutoCompleteTextView destination_box ;
     Spinner items ;
     Spinner items2 ;
-    ArrayList<String> places = new ArrayList<String>(Arrays.asList(  "Administration Block" , "Auditorium" , "Back Gate"  , "Boys Hostel" , "CV Raman Block" ,
-            "Canteen" , "Civil Engineering Department" , "Computer Department" , "Electrical Engineering Department" , "Electronics Engineering Department" ,
-            "Girls Hostel" , "Ground" , "Health Dispensary" , "Lal Chowk" , "Library"  , "MBA Park" , "Main Gate" , "Mechanical Engineering Department" ,
-            "Photocopy Shop" , "Royal Enfield Workshop" , "Shakuntalam Hall" , "Sports Office" , "Student Window" , "VC Office") ) ;
+
+    ArrayList<String> places = new ArrayList<String>();
+
     private Object AdapterView;
 
     boolean fil ,fid ;
 
     public void initialise(){
+
+        FirebaseFirestore db =  FirebaseFirestore.getInstance();
+
+        db.collection("place nodes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    // getting QueryDocumentSnapshot
+                    for(QueryDocumentSnapshot document : task.getResult() ){
+                        if(document.get("place_name")!=null){
+                            places.add( (String) document.get("place_name").toString() );
+                        }
+                    }
+                    // Sorting the places list here
+                    Collections.sort(places) ;
+                }
+                else{
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.i("error" , "didnt get response");
+
+                Toast.makeText(MainPageActivity.this, "Hua to  success" + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
         fil = true ;
         fid = true ;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainPageActivity.this , android.R.layout.simple_spinner_dropdown_item , places) ;
@@ -62,7 +100,6 @@ public class MainPageActivity extends AppCompatActivity {
             }
 
         });
-
 
         destination_box.setAdapter(adapter);
         items2.setAdapter(adapter2);
@@ -94,7 +131,6 @@ public class MainPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 

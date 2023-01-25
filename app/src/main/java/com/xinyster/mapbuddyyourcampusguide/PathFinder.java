@@ -4,19 +4,25 @@ package com.xinyster.mapbuddyyourcampusguide;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 
 public class PathFinder {
     //(1) Data structure
-    String[] names_of_nodes = new String[]{"","Main Gate" , "Junc1" , "Boys Hostel" , "Library" , "Shakuntalam Hall" , "Canteen" , "Royal Enfield Workshop" ,
-            "Mechanical Engineering Department" , "India Post Office" , "Mother Dairy" ,"CV Raman Block" , "Back Gate" , "Junc4" , "Civil Engineering Department"
+    String[] names_of_nodes = new String[]{"","Main Gate" , "Research Lab" , "Boys Hostel" , "Library" , "Shakuntalam Hall" , "Canteen" , "Royal Enfield Workshop" ,
+            "Mechanical Engineering Department" , "India Post Office" , "Mother Dairy" ,"CV Raman Block" , "Back Gate" , "ATM" , "Civil Engineering Department"
             ,"Reception" , "Lal Chowk" , "Health Dispensary" ,"Basket Ball Court" , "Main Ground" ,"VC Office" ,"Management Department" , "Girls Hostel",
-            "Electrical Engineering Department" , "Computer Department" , "MBA Park" , "Electronics Engineering Department" , "Accounts Section" , "Auditorium" , "Computer Lab" ,
-            "Student Window" , "Administration Block" ,"Ground" , "Photocopy Shop" ,"Sports Office" ,"" ,"" ,"" ,"" ,"" ,"" ,"" } ;
+            "Electrical Engineering Department" , "Computer Department" , "MBA Park" , "Electronics Engineering Department" , "Accounts Section" , "Auditorium" , "University Computer Centre" ,
+            "Student Window" , "Administration Block" ,"Ground" , "Photocopy Shop" ,"Sports Office" ,"Registrar Office" ,"Main Stage" ,"Srijan's Quarter" ,"" ,"" ,"" ,"" } ;
+
+
 
     //(2) Data structure
     HashMap< String , Integer > nodeNumber = new HashMap<>();
@@ -54,8 +60,17 @@ public class PathFinder {
     }
 
     public PathFinder(){
+//        FirebaseFirestore db =  FirebaseFirestore.getInstance();
 
         for(int i=1; i<=35; i++){
+
+            Map<String,Object> place_node = new HashMap<>();
+
+            place_node.put("id", i) ;
+            place_node.put("place_name" , names_of_nodes[i] ) ;
+
+//            db.collection("place nodes").add(place_node);
+
             nodeNumber.put(names_of_nodes[i] , i ) ;
             graph[i] = new ArrayList<>();
             distance[i]=100000000;
