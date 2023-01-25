@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "283199985644",
+    "project_id": "mapbuddyyourcampusguide",
+    "storage_bucket": "mapbuddyyourcampusguide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283199985644:android:5b753b8b8cdbabb53d12c9",
+        "android_client_info": {
+          "package_name": "com.xinyster.mapbuddyyourcampusguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283199985644-rltf69otr9nc9p6c38p651htkr08mfkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAALLq7LCRbCYfONyzUYXV6ByKNaM-VX3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283199985644-rltf69otr9nc9p6c38p651htkr08mfkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
