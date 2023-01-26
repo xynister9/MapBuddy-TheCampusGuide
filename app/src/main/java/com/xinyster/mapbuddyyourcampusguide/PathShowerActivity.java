@@ -26,6 +26,7 @@ public class PathShowerActivity extends AppCompatActivity {
         if(start.equals("") || end.equals("")){
             return ;
         }
+
         PathFinder thiss = new PathFinder();
         ArrayList<String> path = thiss.givePath(start,end) ;
 

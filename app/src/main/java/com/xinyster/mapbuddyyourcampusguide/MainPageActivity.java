@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.xinyster.mapbuddyyourcampusguide.DataBaseHelperPackage.DataBaseController;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,33 +45,9 @@ public class MainPageActivity extends AppCompatActivity {
 
     public void initialise(){
 
-        FirebaseFirestore db =  FirebaseFirestore.getInstance();
-
-        db.collection("place nodes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    // getting QueryDocumentSnapshot
-                    for(QueryDocumentSnapshot document : task.getResult() ){
-                        if(document.get("place_name")!=null){
-                            places.add( (String) document.get("place_name").toString() );
-                        }
-                    }
-                    // Sorting the places list here
-                    Collections.sort(places) ;
-                }
-                else{
-
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-                Log.i("error" , "didnt get response");
-
-                Toast.makeText(MainPageActivity.this, "Hua to  success" + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        // Used Db Controller here
+        DataBaseController DCS = new DataBaseController() ;
+        places = DCS.getPacesList();
 
         fil = true ;
         fid = true ;

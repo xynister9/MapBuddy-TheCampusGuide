@@ -27,6 +27,7 @@ public class PathFinder {
     //(2) Data structure
     HashMap< String , Integer > nodeNumber = new HashMap<>();
     //(3) Data structure
+
     String[][] pathname = new String[40][40] ;
     //(4) Data Structure
     int dist[][] = new int[40][40] ;
@@ -35,46 +36,72 @@ public class PathFinder {
 
     //------------------------------------------
     static class Edge {
-        int src;
-        int nbr;
-        int wt;
+        int start;
+        int end ;
+        int weight ;
+        String path_direction ;
 
-        Edge(int src, int nbr, int wt) {
-            this.src = src;
-            this.nbr = nbr;
-            this.wt = wt;
+        Edge(int start, int end, int weight , String direction ) {
+            this.start = start;
+            this.end = end;
+            this.weight = weight;
+            this.path_direction = direction ;
         }
+
+        Map<String,Object> getMap(){
+            Map<String,Object> edgeDoc = new HashMap<>();
+            edgeDoc.put( "start",  start ) ;
+            edgeDoc.put("end" , end ) ;
+            edgeDoc.put("weight" , weight) ;
+            edgeDoc.put("path direction" , path_direction ) ;
+            return edgeDoc ;
+        }
+
     }
 
     //(4) For graph Data structure / adjancency list
     int vtces = 40;
 
-    ArrayList<Edge>[] graph = new ArrayList[vtces];
+    ArrayList<Map<String , Object>> graph = new ArrayList<>() ;
 
     public void connectEgde( int u , int v , int dis , String utov , String vtou ){
-        graph[u].add(new Edge(u, v, dis));
-        graph[v].add(new Edge(v, u, dis));
-        pathname[u][v] = utov ;
-        pathname[v][u] = vtou ;
-        dist[u][v] = dist[v][u] = dis;
+        Edge edu_to_v = new Edge(u, v, dis ,utov) ;
+        Edge edv_to_u = new Edge(v, u, dis ,vtou) ;
+
+        if(graph.size()>u ){
+            Map<String , Object> alist = graph.get(u) ;
+            alist.put( Integer.toString(v) , edu_to_v.getMap() );
+        }
+        if(graph.size()>v ){
+            Map<String , Object> alist = graph.get(v) ;
+            alist.put( Integer.toString(u) , edv_to_u.getMap() );
+        }
+//        graph[u].add(new Edge(u, v, dis ,utov) );
+//        graph[v].add(new Edge(v, u, dis ,vtou) );
+
+//        pathname[u][v] = utov ;
+//        pathname[v][u] = vtou ;
+//        dist[u][v] = dist[v][u] = dis;
     }
+    String sauce= "sauce" ;
 
     public PathFinder(){
 //        FirebaseFirestore db =  FirebaseFirestore.getInstance();
 
         for(int i=1; i<=35; i++){
-
-            Map<String,Object> place_node = new HashMap<>();
-
-            place_node.put("id", i) ;
-            place_node.put("place_name" , names_of_nodes[i] ) ;
+            Map<String,Object> dummy = new HashMap<>();
+            graph.add(dummy) ;
+//            Map<String,Object> place_node = new HashMap<>();
+//
+//            place_node.put("id", i) ;
+//            place_node.put("place_name" , names_of_nodes[i] ) ;
 
 //            db.collection("place nodes").add(place_node);
 
-            nodeNumber.put(names_of_nodes[i] , i ) ;
-            graph[i] = new ArrayList<>();
-            distance[i]=100000000;
-            parent[i]=i;
+//            nodeNumber.put(names_of_nodes[i] , i ) ;
+////            graph[i] = new ArrayList<>();
+//            distance[i]=100000000;
+//            parent[i]=i;
         }
         connectEgde(1,2,50 ,"Go straight" , "Go straight");
         connectEgde(2,3,30 ,"Turn right" , "Go straight");
@@ -110,37 +137,47 @@ public class PathFinder {
         connectEgde(8,30,2,"On the left besides president office" , "Take right , go straight");
         connectEgde(17,31,5,"in right" , "go out straight");
 
+        for (int i = 1 ; i<=31 ; i++){
+            Map<String,Object> alist = new HashMap<>();
+            alist.put(Integer.toString(i) , graph.get(i));
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            try {
+//                db.collection("adjacency list").add(alist);
+//            } catch (Exception e ){
+//                sauce = e.getMessage() ;
+//            }
+        }
     }
 
     public ArrayList<Integer> dijkstra_bfs(int src , int end ){
 
-        Log.i("selected" , src+" "+ end ) ;
-        PriorityQueue<Pair> queue = new PriorityQueue<>();
-
-        queue.add(new Pair(src, 0));
-        boolean[] visited = new boolean[vtces];
-
-        while(queue.size() > 0){
-            Pair curr = queue.remove();
-
-//            System.out.println(rem.v + " via " + rem.psf.toString() + " @ " + rem.wsf);
-
-            for (Edge e : graph[curr.node]) {
-                if (curr.dis + e.wt < distance[e.nbr]) {
-                    distance[e.nbr] = curr.dis + e.wt ;
-                    parent[e.nbr] = curr.node ;
-                    queue.add( new Pair(e.nbr , distance[e.nbr] ) ) ;
-                }
-            }
-        }
+//        Log.i("selected" , src+" "+ end ) ;
+//        PriorityQueue<Pair> queue = new PriorityQueue<>();
+//
+//        queue.add(new Pair(src, 0));
+//        boolean[] visited = new boolean[vtces];
+//
+//        while(queue.size() > 0){
+//            Pair curr = queue.remove();
+//
+////            System.out.println(rem.v + " via " + rem.psf.toString() + " @ " + rem.wsf);
+//
+//            for (Edge e : graph[curr.node]) {
+//                if (curr.dis + e.wt < distance[e.nbr]) {
+//                    distance[e.nbr] = curr.dis + e.wt ;
+//                    parent[e.nbr] = curr.node ;
+//                    queue.add( new Pair(e.nbr , distance[e.nbr] ) ) ;
+//                }
+//            }
+//        }
         ArrayList<Integer> res = new ArrayList<>() ;
-        while(parent[end]!=src){
-            res.add(end) ;
-            end = parent[end];
-        }
-        res.add(end) ;
-        res.add(src) ;
-        Collections.reverse(res);
+//        while(parent[end]!=src){
+//            res.add(end) ;
+//            end = parent[end];
+//        }
+//        res.add(end) ;
+//        res.add(src) ;
+//        Collections.reverse(res);
         return res ;
     }
 
@@ -165,6 +202,7 @@ public class PathFinder {
 
         if(start.equals(end)) {
             shortestPath.add("You are here only !!");
+            shortestPath.add(sauce) ;
             return shortestPath;
         }
 
