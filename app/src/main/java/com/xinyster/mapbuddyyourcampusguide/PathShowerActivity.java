@@ -1,5 +1,7 @@
 package com.xinyster.mapbuddyyourcampusguide;
 
+//import com.xinyster.mapbuddyyourcampusguide.RoutingAlgorithmPackage.PathFinder ;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +10,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.xinyster.mapbuddyyourcampusguide.RoutingAlgorithmPackage.PathFinder;
 
 import java.util.ArrayList;
 
@@ -26,7 +30,7 @@ public class PathShowerActivity extends AppCompatActivity {
         if(start.equals("") || end.equals("")){
             return ;
         }
-
+        
         PathFinder thiss = new PathFinder();
         ArrayList<String> path = thiss.givePath(start,end) ;
 
@@ -42,7 +46,7 @@ public class PathShowerActivity extends AppCompatActivity {
     }
 
     public  void get_back(View view){
-        Intent intent = new Intent(this, MainPageActivity.class);
+        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 }

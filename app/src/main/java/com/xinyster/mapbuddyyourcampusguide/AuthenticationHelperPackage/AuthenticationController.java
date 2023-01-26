@@ -1,28 +1,36 @@
 package com.xinyster.mapbuddyyourcampusguide.AuthenticationHelperPackage;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.Future;
 
 public class AuthenticationController {
 
     FirebaseAuth mAuth ;
-    final static String successMessage = "Success" ;
 
-    AuthenticationController(){
+    public static String successMessage = "Success" ;
+
+    public AuthenticationController(){
         mAuth = FirebaseAuth.getInstance();
     }
 
     public String logInUser(String email , String password ){
 
-        Task<AuthResult> task = mAuth.signInWithEmailAndPassword(email,password) ;
+        Task<AuthResult> task =  mAuth.signInWithEmailAndPassword(email,password) ;
 
-        if(task.isSuccessful()){
+        while (task.isComplete()==false )
+
+        if(task.isSuccessful()) {
             return successMessage ;
         }
         else{
-            return task.getException().getMessage() ;
+            return task.getException().getMessage();
         }
+        return "General Error" ;
 
     }
 
@@ -30,6 +38,7 @@ public class AuthenticationController {
 
         Task<AuthResult> task = mAuth.createUserWithEmailAndPassword(email,password) ;
 
+        while (task.isComplete()==false) ;
         if(task.isSuccessful()){
             return successMessage ;
         }
@@ -41,5 +50,9 @@ public class AuthenticationController {
 
     public void signOutUser(){
         mAuth.signOut();
+    }
+
+    public FirebaseUser getCurrentUser(){
+        return mAuth.getCurrentUser();
     }
 }

@@ -12,7 +12,7 @@
         android:theme="@style/Theme.MapBuddyYourCampusGuide">
         <activity android:name=".SignInUserActivity"></activity>
         <activity android:name=".PathShowerActivity" />
-        <activity android:name=".MainPageActivity" />
+        <activity android:name=".SearchActivity" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainActivity"

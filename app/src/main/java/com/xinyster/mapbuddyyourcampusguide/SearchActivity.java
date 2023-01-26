@@ -4,17 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.xinyster.mapbuddyyourcampusguide.DataBaseHelperPackage.DataBaseController;
 
 import android.widget.AdapterView;
@@ -24,13 +17,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.TreeSet;
 
 
-public class MainPageActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     AutoCompleteTextView location_box ;
     AutoCompleteTextView destination_box ;
@@ -51,8 +40,8 @@ public class MainPageActivity extends AppCompatActivity {
 
         fil = true ;
         fid = true ;
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainPageActivity.this , android.R.layout.simple_spinner_dropdown_item , places) ;
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MainPageActivity.this , android.R.layout.simple_spinner_dropdown_item ,places ) ;
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchActivity.this , android.R.layout.simple_spinner_dropdown_item , places) ;
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(SearchActivity.this , android.R.layout.simple_spinner_dropdown_item ,places ) ;
 
         location_box.setAdapter(adapter);
         items.setAdapter(adapter2);
@@ -117,7 +106,7 @@ public class MainPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                startActivity(new Intent(MainPageActivity.this , MainActivity.class));
+                startActivity(new Intent(SearchActivity.this , MainActivity.class));
             }
         });
 

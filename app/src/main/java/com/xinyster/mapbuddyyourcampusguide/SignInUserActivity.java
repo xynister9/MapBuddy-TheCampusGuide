@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.xinyster.mapbuddyyourcampusguide.AuthenticationHelperPackage.AuthenticationController;
+import com.xinyster.mapbuddyyourcampusguide.DataBaseHelperPackage.DataBaseController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +57,19 @@ public class SignInUserActivity extends AppCompatActivity {
                 }
                 else {
 
+//                    AuthenticationController ATC = new AuthenticationController();
+//                    String message = ATC.signInNewUser(newmail,newpassword) ;
+//
+//                    DataBaseController DTC = new DataBaseController() ;
+//                    DTC.addUserData(user);
+
+//                    if(message.equals(AuthenticationController.successMessage)){
+//                        startActivity(new Intent(LoginActivity.this, SearchActivity.class) );
+//                    }
+//                    else{
+//                        Toast.makeText(LoginActivity.this, "Login Error : " + message,  Toast.LENGTH_LONG).show();
+//                    }
+
                     mAuth.createUserWithEmailAndPassword(newmail,newpassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(Task<AuthResult> task) {
@@ -78,7 +93,7 @@ public class SignInUserActivity extends AppCompatActivity {
             @Override
             public void onComplete(Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    startActivity(new Intent(SignInUserActivity.this,MainPageActivity.class) );
+                    startActivity(new Intent(SignInUserActivity.this, SearchActivity.class) );
                 } else{
                     Toast.makeText(SignInUserActivity.this, "Login Error : " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
